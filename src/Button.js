@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import Loading from "./Loading";
+import DefaultLoading from "./Loading";
 
 const defaultClasses = {
   buttonType1:
@@ -88,8 +88,14 @@ const Button = ({
   disabled,
   style = {},
   classes = defaultClasses,
+  components = { Loading = DefaultLoading },
   ...props
 }) => {
+  if (!classes) classes = {};
+  Object.keys(defaultClasses).forEach(key => {
+    if (!classes[key]) classes[key] = defaultClasses[key];
+  });
+
   if (loading) {
     return (
       <div
@@ -103,7 +109,7 @@ const Button = ({
           classes={classes}
           {...props}
         />
-        <Loading className={classes.loading} />
+        <components.Loading className={classes.loading} />
       </div>
     );
   }
