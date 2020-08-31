@@ -41,12 +41,12 @@ const LeadForm = ({
       {messageError && <FormError>{messageError}</FormError>}
 
       {messageSuccess && (
-        <>
+        <React.Fragment>
           <div className="success-message gold fw7 f6 mb3">
             {messageSuccess}
           </div>
           <div className="absolute absolute--fill" />
-        </>
+        </React.Fragment>
       )}
 
       {recatchaSiteKey && showRecaptcha && (

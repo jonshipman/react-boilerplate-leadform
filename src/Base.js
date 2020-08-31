@@ -40,7 +40,7 @@ const BaseFormComponent = ({
   values,
 }) => {
   return (
-    <>
+    <React.Fragment>
       {Object.entries(fields).map(([field, { component }]) => {
         return (
           <FieldComponentWrapper
@@ -54,7 +54,7 @@ const BaseFormComponent = ({
           />
         );
       })}
-    </>
+    </React.Fragment>
   );
 };
 
