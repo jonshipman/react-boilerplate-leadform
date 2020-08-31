@@ -10,6 +10,7 @@ const defaultClasses = {
   leadForm: "lead-form relative",
   formGroups: "form-groups",
   button: null,
+  input: null,
 };
 
 const LeadForm = ({
@@ -59,6 +60,7 @@ const LeadForm = ({
           fields={fields}
           errors={formErrors}
           values={formValues}
+          inputClasses={classes.input}
           updateState={onFormValueChange}
         />
       </div>

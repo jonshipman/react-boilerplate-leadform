@@ -203,6 +203,11 @@ const FormGroup = (
   },
   ref,
 ) => {
+  if (!classes) classes = {};
+  Object.keys(defaultClasses).forEach((key) => {
+    if (!classes[key]) classes[key] = defaultClasses[key];
+  });
+
   const mergedClassName = `${classes.group} ${className}`;
 
   if ("textarea" === type) {

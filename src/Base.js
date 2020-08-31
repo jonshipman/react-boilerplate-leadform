@@ -33,6 +33,7 @@ const FieldComponentWrapper = ({
 };
 
 const BaseFormComponent = ({
+  inputClasses,
   name,
   fields,
   updateState,
@@ -44,6 +45,7 @@ const BaseFormComponent = ({
       {Object.entries(fields).map(([field, { component }]) => {
         return (
           <FieldComponentWrapper
+            classes={inputClasses}
             render={component}
             field={field}
             value={values[field]}
