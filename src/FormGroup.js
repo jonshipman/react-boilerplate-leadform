@@ -109,7 +109,7 @@ const Input = ({
       id={id}
       type={type}
       value={value}
-      className={label.field}
+      className={classes.field}
       style={{ flexGrow: 1 }}
       key={keyGeneration({ loading })}
       {...props}
@@ -143,7 +143,7 @@ const Select = ({
       onChange={(e) => onChange(e.currentTarget.value)}
       id={id}
       value={value}
-      className={label.field}
+      className={classes.field}
       style={{ flexGrow: 1 }}
       key={keyGeneration({ loading })}
       {...props}
@@ -184,7 +184,7 @@ const Textarea = ({
       onChange={(e) => onChange(e.currentTarget.value)}
       id={id}
       value={value}
-      className={label.field}
+      className={classes.field}
       style={{ flexGrow: 1 }}
       key={keyGeneration({ loading })}
       {...props}
