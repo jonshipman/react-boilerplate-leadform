@@ -15,12 +15,11 @@ npm install --save react-boilerplate-leadform
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'react-boilerplate-leadform'
-import 'react-boilerplate-leadform/dist/index.css'
+import { LeadForm } from 'react-boilerplate-leadform'
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <LeadForm />
   }
 }
 ```
