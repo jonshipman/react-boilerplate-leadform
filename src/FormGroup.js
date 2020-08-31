@@ -29,6 +29,7 @@ const Checkbox = ({
   loading,
   options = [{ value: "1", label: "" }],
   forwardedRef,
+  classes,
   ...props
 }) => {
   const cbClasses = (prop) => {
@@ -92,6 +93,7 @@ const Input = ({
   children,
   loading,
   forwardedRef,
+  classes,
   ...props
 }) => (
   <div className={className}>
@@ -127,6 +129,7 @@ const Select = ({
   placeholder,
   loading,
   forwardedRef,
+  classes,
   ...props
 }) => (
   <div className={className}>
@@ -166,6 +169,7 @@ const Textarea = ({
   children,
   loading,
   forwardedRef,
+  classes,
   ...props
 }) => (
   <div className={className}>
