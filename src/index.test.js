@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import LeadForm from ".";
 
-describe('ExampleComponent', () => {
-  it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
-  })
-})
+describe("LeadForm", () => {
+  it("is truthy", () => {
+    expect(LeadForm).toBeTruthy();
+  });
+});

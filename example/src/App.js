@@ -1,10 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import { ExampleComponent } from 'react-boilerplate-leadform'
-import 'react-boilerplate-leadform/dist/index.css'
+import LeadForm from "react-boilerplate-leadform";
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
-}
+  return <LeadForm text="Create React Library Example 😄" />;
+};
 
-export default App
+export default App;
