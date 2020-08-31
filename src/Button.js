@@ -12,6 +12,10 @@ const defaultClasses = {
   loading: "ml3",
 };
 
+const defaultComponents = {
+  Loading: DefaultLoading,
+};
+
 const ButtonRender = ({
   children,
   className = "",
@@ -88,11 +92,11 @@ const Button = ({
   disabled,
   style = {},
   classes = defaultClasses,
-  components = { Loading = DefaultLoading },
+  components = defaultComponents,
   ...props
 }) => {
   if (!classes) classes = {};
-  Object.keys(defaultClasses).forEach(key => {
+  Object.keys(defaultClasses).forEach((key) => {
     if (!classes[key]) classes[key] = defaultClasses[key];
   });
 
