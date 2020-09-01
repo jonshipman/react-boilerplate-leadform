@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Link } from "react-router-dom";
 
 import DefaultLoading from "./Loading";
@@ -25,6 +25,7 @@ const ButtonRender = ({
   form = false,
   to,
   href,
+  forwardedRef,
   ...props
 }) => {
   let classNames = classes.buttonType1;
@@ -58,7 +59,7 @@ const ButtonRender = ({
 
   if (href) {
     return (
-      <a href={href} className={classNames} {...props}>
+      <a ref={forwardedRef} href={href} className={classNames} {...props}>
         {children}
       </a>
     );
@@ -66,7 +67,7 @@ const ButtonRender = ({
 
   if (to) {
     return (
-      <Link to={to} className={classNames} {...props}>
+      <Link ref={forwardedRef} to={to} className={classNames} {...props}>
         {children}
       </Link>
     );
@@ -74,27 +75,35 @@ const ButtonRender = ({
 
   if (form) {
     return (
-      <button className={classNames} type="submit" {...props}>
+      <button
+        ref={forwardedRef}
+        className={classNames}
+        type="submit"
+        {...props}
+      >
         {children}
       </button>
     );
   }
 
   return (
-    <div className={classNames} {...props}>
+    <div ref={forwardedRef} className={classNames} {...props}>
       {children}
     </div>
   );
 };
 
-const Button = ({
-  loading,
-  disabled,
-  style = {},
-  classes = defaultClasses,
-  components = defaultComponents,
-  ...props
-}) => {
+const Button = (
+  {
+    loading,
+    disabled,
+    style = {},
+    classes = defaultClasses,
+    components = defaultComponents,
+    ...props
+  },
+  ref,
+) => {
   if (!classes) classes = {};
   Object.keys(defaultClasses).forEach((key) => {
     if (!classes[key]) classes[key] = defaultClasses[key];
@@ -108,6 +117,7 @@ const Button = ({
         } ${classes.loadingFlex}`}
       >
         <ButtonRender
+          forwardedRef={ref}
           disabled={true}
           style={{ ...style, flexGrow: 1 }}
           classes={classes}
@@ -120,6 +130,7 @@ const Button = ({
 
   return (
     <ButtonRender
+      forwardedRef={ref}
       disabled={disabled}
       style={style}
       classes={classes}
@@ -128,4 +139,4 @@ const Button = ({
   );
 };
 
-export default Button;
+export default forwardRef(Button);
