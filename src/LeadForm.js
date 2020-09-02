@@ -17,6 +17,7 @@ const LeadForm = ({
   className = "",
 }) => {
   const {
+    checkAllFields,
     fields,
     formErrors,
     formName,
@@ -69,7 +70,7 @@ const LeadForm = ({
           loading={mutationLoading}
           className={classes.button}
           onClick={() => {
-            if (!Object.values(formErrors).includes(true)) {
+            if (!Object.values(formErrors).includes(true) && checkAllFields()) {
               const clientMutationId =
                 Math.random().toString(36).substring(2) +
                 new Date().getTime().toString(36);

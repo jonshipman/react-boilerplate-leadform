@@ -85,6 +85,18 @@ const useForm = ({ form = DefaultForm }) => {
     ],
   );
 
+  const checkAllFields = useCallback(() => {
+    let pass = true;
+
+    Object.entries(fields).forEach(([key, field]) => {
+      if (!field.isValid(formValues[key])) {
+        pass = false;
+      }
+    });
+
+    return pass;
+  }, [fields, formValues]);
+
   let messageSuccess = "";
   let messageError = error?.message || "";
 
@@ -101,6 +113,7 @@ const useForm = ({ form = DefaultForm }) => {
   }
 
   return {
+    checkAllFields,
     error,
     fields,
     formErrors,
