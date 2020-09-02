@@ -7,8 +7,6 @@ import Recaptcha from "./Recaptcha";
 import useForm from "./useForm";
 
 const defaultClasses = {
-  leadForm: "lead-form relative",
-  formGroups: "form-groups",
   button: null,
   input: null,
 };
@@ -38,7 +36,7 @@ const LeadForm = ({
   } = useForm({ form });
 
   return (
-    <div className={`${classes.leadForm} ${className}`}>
+    <div className={`lead-form relative ${classes.leadForm} ${className}`}>
       {messageError && <FormError>{messageError}</FormError>}
 
       {messageSuccess && (
@@ -54,7 +52,7 @@ const LeadForm = ({
         <Recaptcha callback={(token) => setToken(token)} />
       )}
 
-      <div className={classes.formGroups}>
+      <div className="form-groups">
         <FormRender
           name={formName}
           fields={fields}
