@@ -66,7 +66,7 @@ const LeadForm = ({
 
       <div className="button-wrap">
         <Button
-          form={true}
+          form
           loading={mutationLoading}
           className={classes.button}
           onClick={() => {

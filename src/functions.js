@@ -1,7 +1,7 @@
 import phone from "phone";
 
 export const isPhone = (str) => {
-  let check = phone(str, "", true);
+  const check = phone(str, "", true);
   return check.length > 0;
 };
 

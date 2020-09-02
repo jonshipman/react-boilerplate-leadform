@@ -87,7 +87,7 @@ const Button = (
       >
         <ButtonRender
           forwardedRef={ref}
-          disabled={true}
+          disabled
           style={{ ...style, flexGrow: 1 }}
           className={className}
           {...props}

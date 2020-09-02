@@ -1,7 +1,9 @@
-import LeadForm from ".";
+import * as tests from ".";
 
-describe("LeadForm", () => {
-  it("is truthy", () => {
-    expect(LeadForm).toBeTruthy();
+Object.keys(tests).forEach((key) => {
+  describe(key, () => {
+    it("is truthy", () => {
+      expect(tests[key]).toBeTruthy();
+    });
   });
 });

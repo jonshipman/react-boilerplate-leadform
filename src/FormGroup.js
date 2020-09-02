@@ -98,7 +98,7 @@ const Input = ({
     )}
     <input
       ref={forwardedRef}
-      onKeyDown={(e) => "Enter" === e.key && onEnter()}
+      onKeyDown={(e) => e.key === "Enter" && onEnter()}
       onChange={(e) => onChange(e.currentTarget.value)}
       id={id}
       type={type}
@@ -174,7 +174,7 @@ const Textarea = ({
     )}
     <textarea
       ref={forwardedRef}
-      onKeyDown={(e) => "Enter" === e.key && onEnter()}
+      onKeyDown={(e) => e.key === "Enter" && onEnter()}
       onChange={(e) => onChange(e.currentTarget.value)}
       id={id}
       value={value}
@@ -204,7 +204,7 @@ const FormGroup = (
 
   const mergedClassName = `${classes.group} ${className}`;
 
-  if ("textarea" === type) {
+  if (type === "textarea") {
     return (
       <Textarea
         forwardedRef={ref}
@@ -217,7 +217,7 @@ const FormGroup = (
     );
   }
 
-  if ("select" === type) {
+  if (type === "select") {
     return (
       <Select
         forwardedRef={ref}
@@ -230,7 +230,7 @@ const FormGroup = (
     );
   }
 
-  if ("checkbox" === type || "radio" === type) {
+  if (type === "checkbox" || type === "radio") {
     return (
       <Checkbox
         forwardedRef={ref}
