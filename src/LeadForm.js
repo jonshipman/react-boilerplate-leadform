@@ -36,7 +36,7 @@ const LeadForm = ({
   } = useForm({ form });
 
   return (
-    <div className={`lead-form relative ${classes.leadForm} ${className}`}>
+    <div className={`lead-form relative ${className}`}>
       {messageError && <FormError>{messageError}</FormError>}
 
       {messageSuccess && (
