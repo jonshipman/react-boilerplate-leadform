@@ -3,24 +3,12 @@ import { Link } from "react-router-dom";
 
 import DefaultLoading from "./Loading";
 
-const defaultClasses = {
-  buttonType1:
-    "pointer link bg-animate hover-bg-secondary br2 ph4 pv2 white bg-primary bn",
-  buttonType2: "pointer link dim br2 ph4 pv2 white ba b--white",
-  buttonType3: "pointer link dim br2 ph4 pv2 primary ba b--primary",
-  loadingFlex: "justify-between items-center",
-  loading: "ml3",
-};
-
-const defaultComponents = {
-  Loading: DefaultLoading,
-};
+export const defaultClassName =
+  "pointer link bg-animate hover-bg-secondary br2 ph4 pv2 white bg-primary bn";
 
 const ButtonRender = ({
   children,
   className = "",
-  classes,
-  altClasses,
   type,
   form = false,
   to,
@@ -28,21 +16,7 @@ const ButtonRender = ({
   forwardedRef,
   ...props
 }) => {
-  let classNames = classes.buttonType1;
-
-  if (2 === type) {
-    classNames = classes.buttonType2;
-  }
-
-  if (3 === type) {
-    classNames = classes.buttonType3;
-  }
-
-  if (altClasses) {
-    classNames = altClasses;
-  }
-
-  classNames += ` ${className}`;
+  let classNames = className;
 
   if (
     !classNames.includes("db") &&
@@ -54,7 +28,7 @@ const ButtonRender = ({
   }
 
   if (props.disabled) {
-    props.onClick = () => true;
+    props.onClick = () => {};
   }
 
   if (href) {
@@ -98,32 +72,27 @@ const Button = (
     loading,
     disabled,
     style = {},
-    classes = defaultClasses,
-    components = defaultComponents,
+    className = defaultClassName,
+    Loading = DefaultLoading,
     ...props
   },
   ref,
 ) => {
-  if (!classes) classes = {};
-  Object.keys(defaultClasses).forEach((key) => {
-    if (!classes[key]) classes[key] = defaultClasses[key];
-  });
-
   if (loading) {
     return (
       <div
         className={`${
-          props?.className?.includes("db") ? "flex" : "inline-flex"
-        } ${classes.loadingFlex}`}
+          className?.includes("db") ? "flex" : "inline-flex"
+        } justify-between items-center`}
       >
         <ButtonRender
           forwardedRef={ref}
           disabled={true}
           style={{ ...style, flexGrow: 1 }}
-          classes={classes}
+          className={className}
           {...props}
         />
-        <components.Loading className={classes.loading} />
+        <Loading className="ml3" />
       </div>
     );
   }
@@ -133,7 +102,7 @@ const Button = (
       forwardedRef={ref}
       disabled={disabled}
       style={style}
-      classes={classes}
+      className={className}
       {...props}
     />
   );

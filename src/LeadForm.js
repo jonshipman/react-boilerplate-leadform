@@ -68,7 +68,7 @@ const LeadForm = ({
       <Button
         form={true}
         loading={mutationLoading}
-        classes={classes.button}
+        className={classes.button}
         onClick={() => {
           if (!Object.values(formErrors).includes(true)) {
             const clientMutationId =

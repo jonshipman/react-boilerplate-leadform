@@ -1,17 +1,15 @@
 import React, { forwardRef } from "react";
 
-const defaultClasses = {
+const defaultFormGroupClasses = {
   group: "form-group overflow-hidden w-100 mb4",
   field: "w-100 b--light-silver br0 bb-1 bl-0 br-0 bt-0 pa pl2 pb2",
   label: "fw7 ttu db w-100 mb2 pl2",
-  checkbox: {
-    labelPrime: "main",
-    labelInner: "dib pointer mr3 mb2",
-    field: "dib ml2",
-    group: "flex-l",
-    groupLabel: "w-50-l",
-    groupField: "w-50-l",
-  },
+  cbLabelPrime: "main",
+  cbLabelInner: "dib pointer mr3 mb2",
+  cbField: "dib ml2",
+  cbGroup: "flex-l",
+  cbGroupLabel: "w-50-l",
+  cbGroupField: "w-50-l",
 };
 
 const keyGeneration = ({ loading = false }) => {
@@ -29,36 +27,32 @@ const Checkbox = ({
   loading,
   options = [{ value: "1", label: "" }],
   forwardedRef,
-  classes,
+  classes = {},
   ...props
 }) => {
-  const cbClasses = (prop) => {
-    let ret = classes[prop];
-
-    if (!ret) {
-      ret = defaultClasses[prop];
-    }
-
-    return ret;
-  };
+  const {
+    cbLabelPrime,
+    cbLabelInner,
+    cbField,
+    cbGroup,
+    cbGroupLabel,
+    cbGroupField,
+  } = classes;
 
   return (
     <div className={className} ref={forwardedRef}>
-      <div className={cbClasses("group")}>
-        <div className={cbClasses("groupLabel")}>
-          <label
-            htmlFor={id}
-            className={`${cbClasses("labelPrime")} ${classes.label}`}
-          >
+      <div className={cbGroup}>
+        <div className={cbGroupLabel}>
+          <label htmlFor={id} className={`${cbLabelPrime} ${classes.label}`}>
             {label}:{" "}
           </label>
         </div>
 
-        <div className={cbClasses("groupField")}>
+        <div className={cbGroupField}>
           {options.map(({ value: oValue, label: oLabel }) => (
             <label
               htmlFor={`${id}-${oValue}`}
-              className={cbClasses("labelInner")}
+              className={cbLabelInner}
               key={`${id}-${oValue}`}
             >
               <input
@@ -66,7 +60,7 @@ const Checkbox = ({
                 type={type}
                 value={oValue}
                 checked={value === oValue}
-                className={cbClasses("field")}
+                className={cbField}
                 onChange={(e) => onChange(e.currentTarget.value)}
                 key={keyGeneration({ loading })}
                 {...props}
@@ -198,14 +192,14 @@ const FormGroup = (
     type = "text",
     className = "",
     children,
-    classes = defaultClasses,
+    classes = defaultFormGroupClasses,
     ...props
   },
   ref,
 ) => {
   if (!classes) classes = {};
-  Object.keys(defaultClasses).forEach((key) => {
-    if (!classes[key]) classes[key] = defaultClasses[key];
+  Object.keys(defaultFormGroupClasses).forEach((key) => {
+    if (!classes[key]) classes[key] = defaultFormGroupClasses[key];
   });
 
   const mergedClassName = `${classes.group} ${className}`;
