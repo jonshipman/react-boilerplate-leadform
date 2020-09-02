@@ -63,29 +63,31 @@ const LeadForm = ({
         />
       </div>
 
-      <Button
-        form={true}
-        loading={mutationLoading}
-        className={classes.button}
-        onClick={() => {
-          if (!Object.values(formErrors).includes(true)) {
-            const clientMutationId =
-              Math.random().toString(36).substring(2) +
-              new Date().getTime().toString(36);
+      <div className="button-wrap">
+        <Button
+          form={true}
+          loading={mutationLoading}
+          className={classes.button}
+          onClick={() => {
+            if (!Object.values(formErrors).includes(true)) {
+              const clientMutationId =
+                Math.random().toString(36).substring(2) +
+                new Date().getTime().toString(36);
 
-            mutation({
-              variables: {
-                ...formValues,
-                clientMutationId,
-                wpNonce: nonce,
-                gToken: token,
-              },
-            });
-          }
-        }}
-      >
-        {getButton()}
-      </Button>
+              mutation({
+                variables: {
+                  ...formValues,
+                  clientMutationId,
+                  wpNonce: nonce,
+                  gToken: token,
+                },
+              });
+            }
+          }}
+        >
+          {getButton()}
+        </Button>
+      </div>
     </div>
   );
 };
