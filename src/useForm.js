@@ -50,7 +50,7 @@ const useForm = ({ form = DefaultForm }) => {
         setNonce(n.wpNonce);
       }
     });
-  }, [wpNonce, formName]);
+  }, [wpNonce, formName, setNonce]);
 
   const [
     mutation,
