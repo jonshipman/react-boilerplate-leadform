@@ -88,14 +88,14 @@ const useForm = ({ form = DefaultForm }) => {
   const checkAllFields = useCallback(() => {
     let pass = true;
 
-    Object.entries(fields).map(([key, { isValid }]) => {
-      if (!isValid(formValues[key])) {
+    Object.keys(fields).forEach((key) => {
+      if (!isValid(key, formValues[key])) {
         pass = false;
       }
     });
 
     return pass;
-  }, [fields, formValues]);
+  }, [fields, formValues, isValid]);
 
   let messageSuccess = "";
   let messageError = error?.message || "";
