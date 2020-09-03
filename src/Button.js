@@ -16,7 +16,7 @@ const ButtonRender = ({
   forwardedRef,
   ...props
 }) => {
-  let classNames = className;
+  let classNames = className || "";
 
   if (
     !classNames.includes("db") &&
