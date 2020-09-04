@@ -15,9 +15,11 @@ const LeadForm = ({
   form = DefaultForm,
   classes = defaultClasses,
   className = "",
+  modifyValuesOnSubmit = () => {},
+  buttonLoading,
+  onCompleted = () => {},
 }) => {
   const {
-    checkAllFields,
     fields,
     formErrors,
     formName,
@@ -26,15 +28,13 @@ const LeadForm = ({
     getButton,
     messageError,
     messageSuccess,
-    mutation,
     mutationLoading,
-    nonce,
     onFormValueChange,
     recatchaSiteKey,
     setToken,
     showRecaptcha,
-    token,
-  } = useForm({ form });
+    submit,
+  } = useForm({ form, modifyValuesOnSubmit, onCompleted });
 
   return (
     <div className={`lead-form relative ${className}`}>
@@ -67,24 +67,9 @@ const LeadForm = ({
       <div className="button-wrap">
         <Button
           form
-          loading={mutationLoading}
+          loading={mutationLoading || buttonLoading}
           className={classes.button}
-          onClick={() => {
-            if (!Object.values(formErrors).includes(true) && checkAllFields()) {
-              const clientMutationId =
-                Math.random().toString(36).substring(2) +
-                new Date().getTime().toString(36);
-
-              mutation({
-                variables: {
-                  ...formValues,
-                  clientMutationId,
-                  wpNonce: nonce,
-                  gToken: token,
-                },
-              });
-            }
-          }}
+          onClick={submit}
         >
           {getButton()}
         </Button>

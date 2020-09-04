@@ -17,7 +17,11 @@ const QUERY = gql`
   }
 `;
 
-const useForm = ({ form = DefaultForm }) => {
+const useForm = ({
+  form = DefaultForm,
+  modifyValuesOnSubmit = () => {},
+  onCompleted = () => {},
+}) => {
   const {
     name: formName,
     component: FormRender,
@@ -55,7 +59,7 @@ const useForm = ({ form = DefaultForm }) => {
   const [
     mutation,
     { loading: mutationLoading, data: mutationData },
-  ] = useMutation(getMutation());
+  ] = useMutation(getMutation(), { onCompleted });
 
   const onFormValueChange = useCallback(
     (field, value) => {
@@ -97,6 +101,35 @@ const useForm = ({ form = DefaultForm }) => {
     return pass;
   }, [fields, formValues, isValid]);
 
+  const submit = useCallback(() => {
+    if (!Object.values(formErrors).includes(true) && checkAllFields()) {
+      const clientMutationId =
+        Math.random().toString(36).substring(2) +
+        new Date().getTime().toString(36);
+
+      const variables = {
+        ...formValues,
+        clientMutationId,
+        wpNonce: nonce,
+        gToken: token,
+      };
+
+      modifyValuesOnSubmit(variables);
+
+      mutation({ variables });
+    } else {
+      // Todo: user notify that something is amiss.
+    }
+  }, [
+    formErrors,
+    checkAllFields,
+    mutation,
+    formValues,
+    nonce,
+    token,
+    modifyValuesOnSubmit,
+  ]);
+
   let messageSuccess = "";
   let messageError = error?.message || "";
 
@@ -131,6 +164,7 @@ const useForm = ({ form = DefaultForm }) => {
     recatchaSiteKey,
     setToken,
     showRecaptcha,
+    submit,
     token,
   };
 };
