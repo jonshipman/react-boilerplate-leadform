@@ -8,4 +8,4 @@ import useForm from "./useForm";
 export * from "./Base";
 export * from "./functions";
 
-export { Base, Button, FormError, FormGroup, Recaptcha, useForm, LeadForm };
+export { Button, FormError, FormGroup, Recaptcha, useForm, LeadForm };
