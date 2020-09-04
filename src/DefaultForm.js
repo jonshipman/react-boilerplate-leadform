@@ -2,7 +2,7 @@ import React from "react";
 import { gql } from "@apollo/client";
 
 import { isPhone, isEmail } from "./functions";
-import Base, { TemplateField } from "./Base";
+import { Base, TemplateField } from "./Base";
 
 class Form extends Base {
   name = "default";
