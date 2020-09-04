@@ -60,7 +60,7 @@ const BaseFormComponent = ({
   );
 };
 
-export default class {
+export class Base {
   getButton = () => {
     return this.form.button || "Submit";
   };
