@@ -13,10 +13,7 @@
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "test": "run-s test:lint test:build",
-    "test:build": "run-s build",
-    "test:lint": "eslint ."
+    "start": "microbundle-crl watch --no-compress --format modern,cjs"
   },
   "peerDependencies": {
     "@apollo/client": "^3.1.4",
