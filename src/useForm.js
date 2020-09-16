@@ -34,6 +34,7 @@ const useForm = ({
   } = form;
 
   const { data = {}, loading, error } = useQuery(QUERY, { errorPolicy: "all" });
+  const [submissionError, setSubmissionError] = useState("");
 
   const initialState = useMemo(() => {
     return buildState();
@@ -91,18 +92,27 @@ const useForm = ({
 
   const checkAllFields = useCallback(() => {
     let pass = true;
+    const requiredFields = [];
 
     Object.keys(fields).forEach((key) => {
       if (!isValid(key, formValues[key])) {
         pass = false;
+        requiredFields.push(key);
       }
     });
 
-    return pass;
+    return [pass, requiredFields];
   }, [fields, formValues, isValid]);
 
   const submit = useCallback(() => {
-    if (!Object.values(formErrors).includes(true) && checkAllFields()) {
+    let pass = !Object.values(formErrors).includes(true);
+    let fields = [];
+
+    if (pass) {
+      [pass, fields] = checkAllFields();
+    }
+
+    if (pass) {
       const clientMutationId =
         Math.random().toString(36).substring(2) +
         new Date().getTime().toString(36);
@@ -118,7 +128,8 @@ const useForm = ({
 
       mutation({ variables });
     } else {
-      // Todo: user notify that something is amiss.
+      setSubmissionError("Not all required fields were filled.");
+      console.error("Required Fields:", fields);
     }
   }, [
     formErrors,
@@ -128,10 +139,11 @@ const useForm = ({
     nonce,
     token,
     modifyValuesOnSubmit,
+    setSubmissionError,
   ]);
 
   let messageSuccess = "";
-  let messageError = error?.message || "";
+  let messageError = error?.message || submissionError;
 
   if (mutationData) {
     const { success, messageError: eMsg } = getMutationData(mutationData);
@@ -146,7 +158,6 @@ const useForm = ({
   }
 
   return {
-    checkAllFields,
     error,
     fields,
     formErrors,
