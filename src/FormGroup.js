@@ -1,260 +1,209 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useContext, createContext } from "react";
 
-const defaultFormGroupClasses = {
-  group: "form-group overflow-hidden w-100 mb4",
-  field: "w-100 b--light-silver br0 bb-1 bl-0 br-0 bt-0 pa pl2 pb2",
-  label: "fw7 ttu db w-100 mb2 pl2",
-  cbLabelPrime: "main",
-  cbLabelInner: "dib pointer mr3 mb2",
-  cbField: "dib ml2",
-  cbGroup: "flex-l",
-  cbGroupLabel: "w-50-l",
-  cbGroupField: "w-50-l",
-};
+const CheckboxContext = createContext({});
 
 const keyGeneration = ({ loading = false }) => {
   return loading ? `loading` : `loaded`;
 };
 
-const Checkbox = ({
-  id,
-  type = "checkbox",
-  label = "Checkbox",
-  onChange = () => {},
-  value = "",
-  className = "",
+export const YesNoOptions = [
+  { value: 1, label: "Yes" },
+  { value: 0, label: "No" },
+];
+
+export const CheckboxGroup = ({
+  className = "pl2 flex-l flex-wrap-1",
   children,
-  loading,
-  options = [{ value: "1", label: "" }],
-  forwardedRef,
-  classes = {},
   ...props
 }) => {
-  const {
-    cbLabelPrime,
-    cbLabelInner,
-    cbField,
-    cbGroup,
-    cbGroupLabel,
-    cbGroupField,
-  } = classes;
-
   return (
-    <div className={className} ref={forwardedRef}>
-      <div className={cbGroup}>
-        <div className={cbGroupLabel}>
-          <label htmlFor={id} className={`${cbLabelPrime} ${classes.label}`}>
-            {label}:{" "}
-          </label>
-        </div>
-
-        <div className={cbGroupField}>
-          {options.map(({ value: oValue, label: oLabel }) => (
-            <label
-              htmlFor={`${id}-${oValue}`}
-              className={cbLabelInner}
-              key={`${id}-${oValue}`}
-            >
-              <input
-                id={`${id}-${oValue}`}
-                type={type}
-                value={oValue}
-                checked={value === oValue}
-                className={cbField}
-                onChange={(e) => onChange(e.currentTarget.value)}
-                key={keyGeneration({ loading })}
-                {...props}
-              />
-              {` ${oLabel}`}
-            </label>
-          ))}
-        </div>
-      </div>
-
+    <div {...{ className }} {...props}>
       {children}
     </div>
   );
 };
 
-const Input = ({
-  id,
-  label,
-  type = "text",
-  onChange = () => {},
-  onEnter = () => {},
-  value = "",
-  className = "",
+export const CheckboxLabel = ({
+  className = "db w-50-l pointer flex items-center",
   children,
-  loading,
-  forwardedRef,
-  classes,
   ...props
-}) => (
-  <div className={className}>
-    {label && (
-      <label htmlFor={id} className={classes.label}>
-        {label}:{" "}
-      </label>
-    )}
-    <input
-      ref={forwardedRef}
-      onKeyDown={(e) => e.key === "Enter" && onEnter()}
-      onChange={(e) => onChange(e.currentTarget.value)}
-      id={id}
-      type={type}
-      value={value}
-      className={classes.field}
-      style={{ flexGrow: 1 }}
-      key={keyGeneration({ loading })}
-      {...props}
-    />
-    {children}
-  </div>
-);
+}) => {
+  return (
+    <label {...{ className }} {...props}>
+      {children}
+    </label>
+  );
+};
 
-const Select = ({
-  id,
-  label,
-  onChange = () => {},
-  options = {},
-  value = "",
-  className = "",
+export const CheckboxField = ({
+  className = "db w-50-l",
   children,
-  placeholder,
-  loading,
-  forwardedRef,
-  classes,
   ...props
-}) => (
-  <div className={className}>
-    {label && (
-      <label htmlFor={id} className={classes.label}>
-        {label}:{" "}
-      </label>
-    )}
-    <select
-      ref={forwardedRef}
-      onChange={(e) => onChange(e.currentTarget.value)}
-      id={id}
-      value={value}
-      className={classes.field}
-      style={{ flexGrow: 1 }}
-      key={keyGeneration({ loading })}
-      {...props}
-    >
-      {placeholder && <option value="">{placeholder}</option>}
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
+}) => {
+  return <input {...{ className }} {...props} />;
+};
+
+let Checkbox = (
+  { id, options = [{ value: "1", label: "" }], value, ...props },
+  ref,
+) => {
+  const CheckboxComponents = useContext(CheckboxContext);
+
+  return (
+    <CheckboxComponents.CheckboxGroup {...{ ref }}>
+      {options.map(({ value: oValue, label: oLabel }) => (
+        <CheckboxComponents.CheckboxLabel
+          htmlFor={`${id}-${oValue}`}
+          key={`${id}-${oValue}`}
+        >
+          <span>
+            <CheckboxComponents.CheckboxField
+              id={`${id}-${oValue}`}
+              value={`${oValue}`}
+              checked={`${value}` === `${oValue}`}
+              {...props}
+            />
+          </span>
+          <span>{` ${oLabel}`}</span>
+        </CheckboxComponents.CheckboxLabel>
       ))}
-    </select>
-    {children}
-  </div>
-);
+    </CheckboxComponents.CheckboxGroup>
+  );
+};
+Checkbox = forwardRef(Checkbox);
 
-const Textarea = ({
-  id,
-  label,
-  onChange = () => {},
-  onEnter = () => {},
-  value = "",
-  className = "",
+export const Label = ({
+  className = "w-100 fw7 ttu db mb2 pl2",
   children,
-  loading,
-  forwardedRef,
-  classes,
   ...props
-}) => (
-  <div className={className}>
-    {label && (
-      <label htmlFor={id} className={classes.label}>
-        {label}:{" "}
-      </label>
-    )}
-    <textarea
-      ref={forwardedRef}
-      onKeyDown={(e) => e.key === "Enter" && onEnter()}
-      onChange={(e) => onChange(e.currentTarget.value)}
-      id={id}
-      value={value}
-      className={classes.field}
-      style={{ flexGrow: 1 }}
-      key={keyGeneration({ loading })}
-      {...props}
-    />
-    {children}
-  </div>
-);
+}) => {
+  return (
+    <label {...{ className }} {...props}>
+      {children}
+      {": "}
+    </label>
+  );
+};
 
-const FormGroup = (
+let Input = (
   {
+    width = 100,
+    id,
+    value = "",
     type = "text",
-    className = "",
-    children,
-    classes = defaultFormGroupClasses,
+    onChange = () => {},
+    onEnter = () => {},
+    className = "b--light-silver br0 bb-1 bl-0 br-0 bt-0 pa pl2 pb2 flex-auto",
+    loading,
     ...props
   },
   ref,
 ) => {
-  if (!classes) classes = {};
-  Object.keys(defaultFormGroupClasses).forEach((key) => {
-    if (!classes[key]) classes[key] = defaultFormGroupClasses[key];
-  });
+  let Type = "input";
 
-  const mergedClassName = `${classes.group} ${className}`;
+  switch (type) {
+    case "select":
+    case "dropdown":
+      Type = "select";
 
-  if (type === "textarea") {
-    return (
-      <Textarea
-        forwardedRef={ref}
-        className={mergedClassName}
-        classes={classes}
-        {...props}
-      >
-        {children}
-      </Textarea>
-    );
+      props.children = (
+        <React.Fragment>
+          {props.placeholder && <option value="">{props.placeholder}</option>}
+          {props.options &&
+            props.options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+        </React.Fragment>
+      );
+
+      break;
+    case "textarea":
+      Type = "textarea";
+    case "checkbox":
+    case "radio":
+      Type = Checkbox;
+      width = "auto";
+      break;
+    default:
+      break;
   }
 
-  if (type === "select") {
-    return (
-      <Select
-        forwardedRef={ref}
-        className={mergedClassName}
-        classes={classes}
-        {...props}
-      >
-        {children}
-      </Select>
-    );
+  className = `${className} w-${width}`;
+
+  return (
+    <Type
+      {...{ ref, id, type, value, className }}
+      onKeyDown={(e) => e.key === "Enter" && onEnter()}
+      onChange={(e) => onChange(e.currentTarget.value)}
+      key={keyGeneration({ loading })}
+      {...props}
+    />
+  );
+};
+Input = forwardRef(Input);
+
+let FormGroup = (
+  { className = "", replaceClass, onError, label, children, ...props },
+  ref,
+) => {
+  const InputComponent = Input;
+  let InputProps = { ...props };
+  const LabelComponent = Label;
+  let LabelProps = { htmlFor: props.id };
+
+  const CheckboxComponents = { CheckboxGroup, CheckboxLabel, CheckboxField };
+
+  if (children) {
+    React.Children.forEach(children, (element) => {
+      if (!React.isValidElement(element)) return;
+
+      if (element.type === InputComponent) {
+        InputProps = { ...InputProps, ...element.props };
+      }
+
+      if (element.type === LabelComponent) {
+        LabelProps = { ...LabelProps, ...element.props };
+      }
+
+      if (element.type === CheckboxGroup) {
+        CheckboxComponents.CheckboxGroup = (props) => (
+          <element.type {...props} {...element.props} />
+        );
+      }
+
+      if (element.type === CheckboxLabel) {
+        CheckboxComponents.CheckboxLabel = (props) => (
+          <element.type {...props} {...element.props} />
+        );
+      }
+
+      if (element.type === CheckboxField) {
+        CheckboxComponents.CheckboxField = (props) => (
+          <element.type {...props} {...element.props} />
+        );
+      }
+    });
   }
 
-  if (type === "checkbox" || type === "radio") {
-    return (
-      <Checkbox
-        forwardedRef={ref}
-        type={type}
-        className={mergedClassName}
-        classes={classes}
-        {...props}
-      >
-        {children}
-      </Checkbox>
-    );
+  const FormGroupProps = { className: "form-group overflow-hidden w-100 mb4" };
+  if (replaceClass) {
+    FormGroupProps.className = className;
+  } else {
+    FormGroupProps.className = `${FormGroupProps.className} ${className}`;
   }
 
   return (
-    <Input
-      forwardedRef={ref}
-      type={type}
-      className={mergedClassName}
-      classes={classes}
-      {...props}
-    >
-      {children}
-    </Input>
+    <CheckboxContext.Provider value={CheckboxComponents}>
+      <div {...FormGroupProps}>
+        {label && <LabelComponent {...LabelProps}>{label}</LabelComponent>}
+        <InputComponent {...InputProps} {...{ ref }} />
+        {onError}
+      </div>
+    </CheckboxContext.Provider>
   );
 };
 
-export default forwardRef(FormGroup);
+FormGroup = forwardRef(FormGroup);
+export { FormGroup, Input, Checkbox };

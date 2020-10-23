@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 
 import FormError from "./FormError";
-import FormGroup from "./FormGroup";
+import { FormGroup } from "./FormGroup";
 
 export const TemplateField = ({
   errorMessage,
@@ -11,9 +11,11 @@ export const TemplateField = ({
   ...props
 }) => {
   return (
-    <FormGroup id={name} {...props}>
-      {hasError && <FormError>{errorMessage}</FormError>}
-    </FormGroup>
+    <FormGroup
+      id={name}
+      onError={hasError && <FormError>{errorMessage}</FormError>}
+      {...props}
+    />
   );
 };
 
