@@ -89,7 +89,7 @@ const Button = (
           forwardedRef={ref}
           disabled
           style={{ ...style, flexGrow: 1 }}
-          className={className}
+          {...{ className }}
           {...props}
         />
         <Loading className="ml3" />
@@ -100,9 +100,7 @@ const Button = (
   return (
     <ButtonRender
       forwardedRef={ref}
-      disabled={disabled}
-      style={style}
-      className={className}
+      {...{ className, style, disabled }}
       {...props}
     />
   );

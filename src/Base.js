@@ -8,12 +8,24 @@ export const TemplateField = ({
   hasError,
   key,
   name,
+  groupClassName,
+  className,
   ...props
 }) => {
+  const moreProps = {};
+
+  if (groupClassName) {
+    moreProps.className = `${groupClassName} ${className}`;
+    moreProps.replaceClass = true;
+  } else {
+    moreProps.className = className;
+  }
+
   return (
     <FormGroup
       id={name}
       onError={hasError && <FormError>{errorMessage}</FormError>}
+      {...moreProps}
       {...props}
     />
   );
@@ -35,23 +47,22 @@ const FieldComponentWrapper = ({
 };
 
 const BaseFormComponent = ({
-  inputClasses,
   name,
   fields,
   updateState,
   errors = {},
   values,
+  children,
+  groupClassName,
 }) => {
   return (
     <React.Fragment>
       {Object.entries(fields).map(([field, { component }]) => {
         return (
           <FieldComponentWrapper
-            classes={inputClasses}
+            {...{ groupClassName, children, updateState, field }}
             render={component}
-            field={field}
             value={values[field]}
-            updateState={updateState}
             key={`${name}-${field}`}
             errorMessage={fields[field]?.errorMessage}
             hasError={errors[field]}

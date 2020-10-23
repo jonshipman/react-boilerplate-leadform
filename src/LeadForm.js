@@ -6,15 +6,12 @@ import FormError from "./FormError";
 import Recaptcha from "./Recaptcha";
 import useForm from "./useForm";
 
-const defaultClasses = {
-  button: null,
-  input: null,
-};
-
 const LeadForm = ({
   form = DefaultForm,
-  classes = defaultClasses,
   className = "",
+  buttonClassName,
+  groupClassName,
+  children,
   modifyValuesOnSubmit = () => {},
   buttonLoading,
   onCompleted = () => {},
@@ -55,20 +52,21 @@ const LeadForm = ({
 
       <div className="form-groups">
         <FormRender
+          {...{ groupClassName, fields }}
           name={formName}
-          fields={fields}
           errors={formErrors}
           values={formValues}
-          inputClasses={classes.input}
           updateState={onFormValueChange}
-        />
+        >
+          {children}
+        </FormRender>
       </div>
 
       <div className="button-wrap">
         <Button
           form
           loading={mutationLoading || buttonLoading}
-          className={classes.button}
+          className={buttonClassName}
           onClick={submit}
         >
           {getButton()}

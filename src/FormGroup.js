@@ -121,6 +121,8 @@ let Input = (
       break;
     case "textarea":
       Type = "textarea";
+      props.children = value;
+      break;
     case "checkbox":
     case "radio":
       Type = Checkbox;
