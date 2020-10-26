@@ -1,79 +1,157 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { FormGroup } from "./FormGroup";
 import Button from "./Button";
-import DefaultForm from "./DefaultForm";
-import FormError from "./FormError";
-import Recaptcha from "./Recaptcha";
-import useForm from "./useForm";
+import { useRecaptcha } from "./useRecaptcha";
+import { useFormData, useLeadFormMutation, useForm } from "./useForm";
+import { isEmail, isPhone } from "./functions";
 
-const LeadForm = ({
-  form = DefaultForm,
-  className = "",
+const schema = {
+  yourName: {
+    valid: function (v) {
+      return v !== "";
+    },
+    text: "You must include a name.",
+  },
+  email: {
+    valid: function (v) {
+      return isEmail(v);
+    },
+    text: "You must include a email.",
+  },
+  phone: {
+    valid: function (v) {
+      return isPhone(v);
+    },
+    text: "Invalid phone.",
+  },
+  message: {
+    valid: function () {
+      return true;
+    },
+  },
+};
+
+export const LeadForm = ({
+  children,
+  className,
   buttonClassName,
   groupClassName,
-  children,
-  modifyValuesOnSubmit = () => {},
-  buttonLoading,
-  onCompleted = () => {},
+  submitionMessage = "Form submitted. Thank you for your submission.",
+  buttonLabel = "Submit",
+  loading: loadingProp,
+  mutation,
 }) => {
-  const {
-    fields,
-    formErrors,
-    formName,
-    FormRender,
-    formValues,
-    getButton,
-    messageError,
-    messageSuccess,
-    mutationLoading,
-    onFormValueChange,
-    recatchaSiteKey,
-    setToken,
-    showRecaptcha,
-    submit,
-  } = useForm({ form, modifyValuesOnSubmit, onCompleted });
+  const [form, setForm] = useState({});
+  const [message, setMessage] = useState();
+  const { recaptchaSiteKey, nonce } = useFormData("default");
+  const [completed, setCompleted] = useState(false);
+  const { token } = useRecaptcha({
+    trigger: isEmail(form.email),
+    key: recaptchaSiteKey,
+  });
+
+  const { submitted, loading: mutateLoading } = useLeadFormMutation({
+    token,
+    nonce,
+    mutation,
+    onCompleted: (data = {}) => {
+      const { defaultFormMutation = {} } = data;
+      const { errorMessage, success } = defaultFormMutation;
+
+      if (success) {
+        setCompleted(true);
+      } else {
+        setMessage(errorMessage);
+      }
+    },
+  });
+
+  const loading = mutateLoading || loadingProp;
+
+  const { Check, onChange, onError } = useForm({
+    form,
+    setForm,
+    schema,
+    submitted,
+  });
+
+  const GroupProps = {};
+
+  if (groupClassName) {
+    GroupProps.replaceClass = true;
+  }
 
   return (
-    <div className={`lead-form relative ${className}`}>
-      {messageError && <FormError>{messageError}</FormError>}
-
-      {messageSuccess && (
-        <React.Fragment>
-          <div className="success-message gold fw7 f6 mb3">
-            {messageSuccess}
+    <div {...{ className }}>
+      <div className="cf">
+        {completed && (
+          <div className="success-message primary fw7 f6 mb3">
+            {submitionMessage}
           </div>
-          <div className="absolute absolute--fill" />
-        </React.Fragment>
-      )}
-
-      {recatchaSiteKey && showRecaptcha && (
-        <Recaptcha callback={(token) => setToken(token)} />
-      )}
-
-      <div className="form-groups">
-        <FormRender
-          {...{ groupClassName, fields }}
-          name={formName}
-          errors={formErrors}
-          values={formValues}
-          updateState={onFormValueChange}
+        )}
+        {message && (
+          <div className="error-message red fw7 f6 mb3">{message}</div>
+        )}
+        <FormGroup
+          className={groupClassName}
+          placeholder="Your Name"
+          id="yourName"
+          value={form.yourName}
+          onChange={(value) => onChange(value, "yourName")}
+          help={onError("yourName")}
+          {...GroupProps}
         >
           {children}
-        </FormRender>
-      </div>
-
-      <div className="button-wrap">
-        <Button
-          form
-          loading={mutationLoading || buttonLoading}
-          className={buttonClassName}
-          onClick={submit}
+        </FormGroup>
+        <FormGroup
+          type="email"
+          className={`${groupClassName || ""} w-50-l fl-l pl2`}
+          placeholder="Your Email"
+          id="email"
+          value={form.email}
+          onChange={(value) => onChange(value, "email")}
+          help={onError("email")}
+          {...GroupProps}
         >
-          {getButton()}
+          {children}
+        </FormGroup>
+        <FormGroup
+          type="tel"
+          className={`${groupClassName || ""} w-50-l fl-l pl2`}
+          placeholder="Your Phone"
+          id="phone"
+          value={form.phone}
+          onChange={(value) => onChange(value, "phone")}
+          help={onError("phone")}
+          {...GroupProps}
+        >
+          {children}
+        </FormGroup>
+        <FormGroup
+          className={groupClassName}
+          placeholder="Message"
+          type="textarea"
+          id="message"
+          value={form.message}
+          onChange={(value) => onChange(value, "message")}
+          help={onError("message")}
+          {...GroupProps}
+        >
+          {children}
+        </FormGroup>
+      </div>
+      <div
+        className={`button-wrap tr ${groupClassName || ""}`}
+        style={{ marginBottom: 0 }}
+      >
+        <Button
+          {...{ loading }}
+          className={buttonClassName}
+          onClick={() => Check()}
+        >
+          {buttonLabel}
         </Button>
       </div>
     </div>
   );
 };
-
-export default LeadForm;

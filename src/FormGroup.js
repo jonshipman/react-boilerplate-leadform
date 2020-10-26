@@ -93,7 +93,7 @@ let Input = (
     type = "text",
     onChange = () => {},
     onEnter = () => {},
-    className = "b--light-silver br0 bb-1 bl-0 br-0 bt-0 pa pl2 pb2 flex-auto",
+    className = "b--light-silver br0 bb-1 bl-0 br-0 bt-0 pl2 pb2 flex-auto",
     loading,
     ...props
   },
@@ -147,7 +147,7 @@ let Input = (
 Input = forwardRef(Input);
 
 let FormGroup = (
-  { className = "", replaceClass, onError, label, children, ...props },
+  { className = "", replaceClass, help, label, children, ...props },
   ref,
 ) => {
   const InputComponent = Input;
@@ -201,7 +201,7 @@ let FormGroup = (
       <div {...FormGroupProps}>
         {label && <LabelComponent {...LabelProps}>{label}</LabelComponent>}
         <InputComponent {...InputProps} {...{ ref }} />
-        {onError}
+        {help}
       </div>
     </CheckboxContext.Provider>
   );
