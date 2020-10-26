@@ -47,7 +47,10 @@ const DefaultMutation = gql`
 
 export const useFormData = (formName) => {
   const [nonce, setNonce] = useState("");
-  const { data = {}, loading, error } = useQuery(QUERY, { errorPolicy: "all" });
+  const { data = {}, loading, error } = useQuery(QUERY, {
+    errorPolicy: "all",
+    ssr: false,
+  });
   const { formData = {} } = data;
   const { wpNonce = [], recatchaSiteKey = "" } = formData;
 
