@@ -103,30 +103,32 @@ export const LeadForm = ({
         >
           {children}
         </FormGroup>
-        <FormGroup
-          type="email"
-          className={`${groupClassName || ""} w-50-l fl-l pl2`}
-          placeholder="Your Email"
-          id="email"
-          value={form.email}
-          onChange={(value) => onChange(value, "email")}
-          help={onError("email")}
-          {...GroupProps}
-        >
-          {children}
-        </FormGroup>
-        <FormGroup
-          type="tel"
-          className={`${groupClassName || ""} w-50-l fl-l pl2`}
-          placeholder="Your Phone"
-          id="phone"
-          value={form.phone}
-          onChange={(value) => onChange(value, "phone")}
-          help={onError("phone")}
-          {...GroupProps}
-        >
-          {children}
-        </FormGroup>
+        <div className="nl2 nr2">
+          <FormGroup
+            type="email"
+            className={`${groupClassName || ""} w-50-l fl-l ph2`}
+            placeholder="Your Email"
+            id="email"
+            value={form.email}
+            onChange={(value) => onChange(value, "email")}
+            help={onError("email")}
+            {...GroupProps}
+          >
+            {children}
+          </FormGroup>
+          <FormGroup
+            type="tel"
+            className={`${groupClassName || ""} w-50-l fl-l ph2`}
+            placeholder="Your Phone"
+            id="phone"
+            value={form.phone}
+            onChange={(value) => onChange(value, "phone")}
+            help={onError("phone")}
+            {...GroupProps}
+          >
+            {children}
+          </FormGroup>
+        </div>
         <FormGroup
           className={groupClassName}
           placeholder="Message"

@@ -93,7 +93,7 @@ let Input = (
     type = "text",
     onChange = () => {},
     onEnter = () => {},
-    className = "b--light-silver br0 bb-1 bl-0 br-0 bt-0 pl2 pb2 flex-auto",
+    className = "b--light-silver br0 bb-1 bl-0 br-0 bt-0 pl2 pb2 flex-auto bg-transparent",
     loading,
     ...props
   },
