@@ -73,6 +73,8 @@ export const useForm = ({
   setForm,
   submitted = () => {},
 }) => {
+  const [errors, setErrors] = useState({});
+
   const Check = () => {
     const newForm = {};
 
@@ -88,14 +90,16 @@ export const useForm = ({
 
     // Loop over the check + newForm for errors
     const _form = { ...form, ...newForm };
-    let valid = true;
+    const _errors = {};
     Object.keys(_form).forEach((key) => {
       if (!schema[key].valid(_form[key])) {
-        valid = false;
+        _errors[key] = schema[key].text;
       }
     });
 
-    if (valid) {
+    if (Object.keys(_errors).length > 0) {
+      setErrors((previous) => ({ ...previous, ..._errors }));
+    } else {
       submitted({
         form,
       });
@@ -103,11 +107,23 @@ export const useForm = ({
   };
 
   const onChange = (value, field) => {
+    if (!schema[field].valid(value) && value !== undefined) {
+      setErrors((previous) => ({ ...previous, [field]: schema[field].text }));
+    } else {
+      setErrors((previous) => {
+        if (previous[field]) {
+          delete previous[field];
+        }
+
+        return previous;
+      });
+    }
+
     setForm((existing) => ({ ...existing, [field]: value }));
   };
 
   const onError = (field) => {
-    if (!schema[field].valid(form[field]) && form[field] !== undefined) {
+    if (errors[field]) {
       return <FormError>{schema[field].text}</FormError>;
     }
   };
