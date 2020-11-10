@@ -92,7 +92,7 @@ export const useForm = ({
     const _form = { ...form, ...newForm };
     const _errors = {};
     Object.keys(_form).forEach((key) => {
-      if (!schema[key].valid(_form[key])) {
+      if (schema[key] && !schema[key].valid(_form[key])) {
         _errors[key] = schema[key].text;
       }
     });
@@ -107,7 +107,7 @@ export const useForm = ({
   };
 
   const onChange = (value, field) => {
-    if (!schema[field].valid(value) && value !== undefined) {
+    if (schema[field] && !schema[field].valid(value) && value !== undefined) {
       setErrors((previous) => ({ ...previous, [field]: schema[field].text }));
     } else {
       setErrors((previous) => {
