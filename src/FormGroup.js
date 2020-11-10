@@ -147,13 +147,15 @@ let Input = (
 Input = forwardRef(Input);
 
 let FormGroup = (
-  { className = "", replaceClass, help, label, children, ...props },
+  { className = "", replaceClass, help, label, children, id: idProp, ...props },
   ref,
 ) => {
+  const id = `${idProp}-${Math.random().toString(36).substr(2, 9)}`;
+
   const InputComponent = Input;
-  let InputProps = { ...props };
+  let InputProps = { id, ...props };
   const LabelComponent = Label;
-  let LabelProps = { htmlFor: props.id };
+  let LabelProps = { htmlFor: id };
 
   const CheckboxComponents = { CheckboxGroup, CheckboxLabel, CheckboxField };
 
